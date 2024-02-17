@@ -1,26 +1,27 @@
-<form [formGroup]="updateProfileForm" (ngSubmit)="updateProfile()">
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput type="text" [value]="session.user.email" disabled />
-  </mat-form-field>
+<div>
+  <form [formGroup]="updateProfileForm" (ngSubmit)="updateProfile()">
+    <mat-form-field class="form-row">
+      <mat-label>Email</mat-label>
+      <input matInput type="text" [value]="session?.user?.email" disabled />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="username" id="username" type="text" />
-  </mat-form-field>
+    <mat-form-field class="form-row">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="username" id="username" type="text" />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Website</mat-label>
-    <input matInput formControlName="website" id="website" type="url" />
-  </mat-form-field>
+    <div>
+      <button
+        mat-flat-button
+        type="submit"
+        color="primary"
+        [disabled]="loading">
+        {{ loading ? 'Loading ...' : 'Update' }}
+      </button>
+    </div>
 
-  <div>
-    <button mat-flat-button type="submit" color="primary" [disabled]="loading">
-      {{ loading ? 'Loading ...' : 'Update' }}
-    </button>
-  </div>
-
-  <div>
-    <button mat-flat-button (click)="signOut()">Sign Out</button>
-  </div>
-</form>
+    <div>
+      <button mat-flat-button (click)="signOut()">Sign Out</button>
+    </div>
+  </form>
+</div>

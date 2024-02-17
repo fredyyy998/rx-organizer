@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserProfile } from '../../models/UserProfile';
-import { AuthSession } from '@supabase/supabase-js';
 import { SupabaseService } from '../../chore/services/supabase.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -18,12 +17,10 @@ export class AccountComponent implements OnInit {
   loading = false;
   profile!: UserProfile;
 
-  @Input()
-  session!: AuthSession;
+  session = this.supabase.session;
 
   updateProfileForm = this.formBuilder.group({
     username: '',
-    website: '',
     avatar_url: '',
   });
 
@@ -35,15 +32,16 @@ export class AccountComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.getProfile();
 
-    const { username, website, avatar_url } = this.profile;
+    const { username, avatar_url } = this.profile;
     this.updateProfileForm.patchValue({
       username,
-      website,
-      avatar_url: avatar_url,
+      avatar_url,
     });
   }
 
   async getProfile() {
+    if (!this.session) return;
+
     try {
       this.loading = true;
       const { user } = this.session;
@@ -70,18 +68,18 @@ export class AccountComponent implements OnInit {
   }
 
   async updateProfile(): Promise<void> {
+    if (!this.session) return;
+
     try {
       this.loading = true;
       const { user } = this.session;
 
       const username = this.updateProfileForm.value.username as string;
-      const website = this.updateProfileForm.value.website as string;
       const avatar_url = this.updateProfileForm.value.avatar_url as string;
 
       const { error } = await this.supabase.updateProfile({
         id: user.id,
         username,
-        website,
         avatar_url: avatar_url,
       });
       if (error) throw error;

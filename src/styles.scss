@@ -2,3 +2,23 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.content-container {
+  display: flex;
+  justify-content: center;
+
+  padding-top: 2em;
+}
+
+.page-content {
+  width: 75em;
+}
+
+.form-row {
+  width: 100%;
+}
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
