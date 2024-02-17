@@ -10,6 +10,8 @@ import { provideState, provideStore } from '@ngrx/store';
 import { profileFeature } from './chore/state/profile/reducers';
 import { ProfileEffects } from './chore/state/profile/effects';
 import { reducer } from './chore/state/state';
+import { sessionFeature } from './chore/state/session/reducers';
+import { SessionEffects } from './chore/state/session/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +23,10 @@ export const appConfig: ApplicationConfig = {
 
     provideState(profileFeature),
     provideEffects(ProfileEffects),
+
+    provideState(sessionFeature),
+    provideEffects(SessionEffects),
+
     provideStoreDevtools(),
   ],
 };

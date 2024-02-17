@@ -9,6 +9,9 @@ import { ProfileSlice } from '../../chore/state/profile/reducers';
 import { Store } from '@ngrx/store';
 import { selectActiveProfile } from '../../chore/state/profile/selectors';
 import { loadProfile } from '../../chore/state/profile/actions';
+import { selectCurrentSession } from '../../chore/state/session/selector';
+import { signOut } from '../../chore/state/session/actions';
+import { Session } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-account',
@@ -23,7 +26,8 @@ export class AccountComponent implements OnInit {
   loading = false;
   profile$ = this.store.select(selectActiveProfile);
 
-  session = this.authService.session;
+  session$ = this.store.select(selectCurrentSession);
+  session: Session | null = null;
 
   updateProfileForm = this.formBuilder.group({
     username: '',
@@ -31,19 +35,21 @@ export class AccountComponent implements OnInit {
   });
 
   constructor(
-    private readonly authService: AuthService,
     private readonly profileService: ProfileService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
-    if (!this.session) return;
+    this.session$.subscribe(session => {
+      this.session = session;
+      if (!session) return;
 
-    this.store.dispatch(
-      loadProfile({
-        user: this.session?.user,
-      })
-    );
+      this.store.dispatch(
+        loadProfile({
+          user: session?.user,
+        })
+      );
+    });
 
     this.profile$.subscribe(profile => {
       if (!profile) return;
@@ -56,7 +62,7 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  async updateProfile(): Promise<void> {
+  async updateProfile() {
     if (!this.session) return;
 
     try {
@@ -81,7 +87,7 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  async signOut() {
-    await this.authService.signOut();
+  signOut() {
+    this.store.dispatch(signOut({ result: true }));
   }
 }

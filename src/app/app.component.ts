@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
 import { AccountComponent } from './pages/account/account.component';
-import { NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { AuthService } from './chore/services/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { SessionSlice } from './chore/state/session/reducers';
+import { selectCurrentSession } from './chore/state/session/selector';
 
 @Component({
   selector: 'app-root',
@@ -20,16 +22,15 @@ import { AuthService } from './chore/services/auth/auth.service';
     MatIcon,
     MatIconButton,
     RouterLink,
+    AsyncPipe,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  session = this.auth.session;
+export class AppComponent {
+  private store = inject<Store<SessionSlice>>(Store);
 
-  constructor(private readonly auth: AuthService) {}
+  session$ = this.store.select(selectCurrentSession);
 
-  ngOnInit() {
-    this.auth.authChanges((_, session) => (this.session = session));
-  }
+  constructor() {}
 }
