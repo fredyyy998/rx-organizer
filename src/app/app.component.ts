@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
-import { SupabaseService } from './chore/services/supabase.service';
+import { SupabaseService } from './chore/services/supabase/supabase.service';
 import { AccountComponent } from './pages/account/account.component';
 import { NgIf } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { AuthService } from './chore/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +26,11 @@ import { MatIconButton } from '@angular/material/button';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  session = this.supabase.session;
+  session = this.auth.session;
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly auth: AuthService) {}
 
   ngOnInit() {
-    this.supabase.authChanges((_, session) => (this.session = session));
+    this.auth.authChanges((_, session) => (this.session = session));
   }
 }

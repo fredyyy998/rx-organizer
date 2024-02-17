@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SupabaseService } from '../../chore/services/supabase.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { AuthService } from '../../chore/services/auth/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -20,7 +20,7 @@ export class AuthComponent {
   });
 
   constructor(
-    private readonly supabase: SupabaseService,
+    private readonly auth: AuthService,
     private readonly formBuilder: FormBuilder
   ) {}
 
@@ -28,7 +28,7 @@ export class AuthComponent {
     try {
       this.loading = true;
       const email = this.signInForm.value.email as string;
-      const { error } = await this.supabase.signIn(email);
+      const { error } = await this.auth.signIn(email);
       if (error) throw error;
       alert('Check your email for the login link!');
     } catch (error) {
