@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { UserProfile } from '../../models/UserProfile';
-import { SupabaseService } from '../../chore/services/supabase/supabase.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { AuthService } from '../../chore/services/auth/auth.service';
 import { ProfileService } from '../../chore/services/profile/profile.service';
+import { ProfileSlice } from '../../chore/state/profile/reducers';
+import { Store } from '@ngrx/store';
+import { selectActiveProfile } from '../../chore/state/profile/selectors';
+import { loadProfile } from '../../chore/state/profile/actions';
 
 @Component({
   selector: 'app-account',
@@ -16,8 +18,10 @@ import { ProfileService } from '../../chore/services/profile/profile.service';
   styleUrl: './account.component.scss',
 })
 export class AccountComponent implements OnInit {
+  private store = inject<Store<ProfileSlice>>(Store);
+
   loading = false;
-  profile!: UserProfile;
+  profile$ = this.store.select(selectActiveProfile);
 
   session = this.authService.session;
 
@@ -32,42 +36,24 @@ export class AccountComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    await this.getProfile();
-
-    const { username, avatar_url } = this.profile;
-    this.updateProfileForm.patchValue({
-      username,
-      avatar_url,
-    });
-  }
-
-  async getProfile() {
+  ngOnInit() {
     if (!this.session) return;
 
-    try {
-      this.loading = true;
-      const { user } = this.session;
-      const {
-        data: profile,
-        error,
-        status,
-      } = await this.profileService.profile(user);
+    this.store.dispatch(
+      loadProfile({
+        user: this.session?.user,
+      })
+    );
 
-      if (error && status !== 406) {
-        throw error;
-      }
+    this.profile$.subscribe(profile => {
+      if (!profile) return;
 
-      if (profile) {
-        this.profile = profile as UserProfile;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      }
-    } finally {
-      this.loading = false;
-    }
+      const { username, avatar_url } = profile;
+      this.updateProfileForm.patchValue({
+        username,
+        avatar_url,
+      });
+    });
   }
 
   async updateProfile(): Promise<void> {
