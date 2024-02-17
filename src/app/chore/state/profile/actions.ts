@@ -11,3 +11,18 @@ export const loadProfileSuccess = createAction(
   '[profile] loadProfileSuccess',
   props<{ profile: UserProfile }>()
 );
+
+export const updateProfile = createAction(
+  '[profile] updateProfile',
+  props<{ id: string; username: string; avatar_url: string }>()
+);
+
+export const updateProfileSuccess = createAction(
+  '[profile] updateProfileSuccess',
+  props<{ profile: UserProfile }>()
+);
+
+export const updateProfileError = createAction(
+  '[profile] updateProfileError',
+  props<{ error: string }>()
+);

@@ -15,8 +15,8 @@
         mat-flat-button
         type="submit"
         color="primary"
-        [disabled]="loading">
-        {{ loading ? 'Loading ...' : 'Update' }}
+        [disabled]="loading$ | async">
+        {{ (loading$ | async) ? 'Loading ...' : 'Update' }}
       </button>
     </div>
 

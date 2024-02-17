@@ -16,12 +16,6 @@ export const sessionSetUp = createAction(
   props<{ session: Session }>()
 );
 
-export const signOut = createAction(
-  '[session] signOut',
-  props<{ result: any }>()
-);
+export const signOut = createAction('[session] signOut');
 
-export const signOutSuccess = createAction(
-  '[session] signOutSuccess',
-  props<{ result: any }>()
-);
+export const signOutSuccess = createAction('[session] signOutSuccess');

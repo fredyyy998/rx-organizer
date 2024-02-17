@@ -20,7 +20,7 @@ export const sessionFeature = createFeature({
   name: SESSION_FEATURE_KEY,
   reducer: createReducer(
     initialState,
-    on(signOutSuccess, (state, action) => {
+    on(signOutSuccess, state => {
       return { ...state, session: null };
     }),
     on(sessionSetUp, (state, action) => {

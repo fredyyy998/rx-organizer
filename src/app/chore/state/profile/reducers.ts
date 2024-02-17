@@ -1,6 +1,12 @@
 import { UserProfile } from '../../../models/UserProfile';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { loadProfileSuccess } from './actions';
+import {
+  loadProfileSuccess,
+  updateProfile,
+  updateProfileError,
+  updateProfileSuccess,
+} from './actions';
+import { state } from '@angular/animations';
 
 export const PROFILE_FEATURE_KEY = 'profile';
 
@@ -10,10 +16,14 @@ export interface ProfileSlice {
 
 export interface ProfileState {
   profile: UserProfile | null;
+  updateRequestInProgress: boolean;
+  errorMessage: string | null;
 }
 
 export const initialState: ProfileState = {
   profile: null,
+  updateRequestInProgress: false,
+  errorMessage: null,
 };
 
 export const profileFeature = createFeature({
@@ -22,6 +32,23 @@ export const profileFeature = createFeature({
     initialState,
     on(loadProfileSuccess, (state, action) => {
       return { ...state, profile: action.profile };
+    }),
+    on(updateProfile, (state, action) => {
+      return { ...state, updateRequestInProgress: true };
+    }),
+    on(updateProfileSuccess, (state, action) => {
+      return {
+        ...state,
+        updateRequestInProgress: false,
+        profile: action.profile,
+      };
+    }),
+    on(updateProfileError, (state, action) => {
+      return {
+        ...state,
+        updateRequestInProgress: false,
+        errorMessage: action.error,
+      };
     })
   ),
 });

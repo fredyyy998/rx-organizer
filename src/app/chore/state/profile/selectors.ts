@@ -8,3 +8,13 @@ export const selectActiveProfile = createSelector(
   selectProfile,
   profile => profile.profile
 );
+
+export const selectProfileUpdateRequestInProgress = createSelector(
+  selectProfile,
+  profile => profile.updateRequestInProgress
+);
+
+export const selectProfileError = createSelector(
+  selectProfile,
+  profile => profile.errorMessage
+);

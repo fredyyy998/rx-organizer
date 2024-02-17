@@ -27,11 +27,7 @@ export class SessionEffects {
     this.actions$.pipe(
       ofType(signOut),
       switchMap(() => this.authService.signOut()),
-      map(() =>
-        signOutSuccess({
-          result: true,
-        })
-      )
+      map(() => signOutSuccess())
     )
   );
 

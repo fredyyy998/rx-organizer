@@ -33,7 +33,16 @@ export class ProfileService {
       updated_at: new Date(),
     };
 
-    return this.supabaseService.supabase.from('profiles').upsert(update);
+    return from(
+      this.supabaseService.supabase.from('profiles').upsert(update)
+    ).pipe(
+      map(res => {
+        if (res.error && res.status !== 406) {
+          throwError(res.error);
+        }
+        return profile;
+      })
+    );
   }
 
   downLoadImage(path: string) {
