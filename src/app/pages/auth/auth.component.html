@@ -1,0 +1,10 @@
+<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email" />
+  </mat-form-field>
+
+  <button type="submit" mat-flat-button color="primary" [disabled]="loading">
+    {{ loading ? 'Loading' : 'Send magic link' }}
+  </button>
+</form>
