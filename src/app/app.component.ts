@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
-import { SupabaseService } from './chore/services/supabase/supabase.service';
 import { AccountComponent } from './pages/account/account.component';
 import { NgIf } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
