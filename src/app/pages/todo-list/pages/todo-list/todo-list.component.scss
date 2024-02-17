@@ -1,0 +1,17 @@
+@import "../../../../../styles";
+
+.content-footer {
+  display: flex;
+  justify-content: space-between;
+
+  color: $mid-gray;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  margin: 2em 0;
+}

@@ -1,0 +1,37 @@
+<mat-card
+  *ngFor="let todo of todos$ | async"
+  class="card"
+  appearance="outlined">
+  <mat-card-header class="header">
+    <mat-card-title>{{ todo.title }}</mat-card-title>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_horiz</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>edit</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>delete</mat-icon>
+        <span>delete</span>
+      </button>
+    </mat-menu>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ todo.description }}</p>
+
+    <div class="content-footer">
+      <span>State: {{ todo.state }}</span>
+      <span *ngIf="todo.dueDate">{{ todo.dueDate | daysUntil }} days left</span>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="card" appearance="outlined">
+  <button mat-button>
+    <span>Add Task</span>
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-card>

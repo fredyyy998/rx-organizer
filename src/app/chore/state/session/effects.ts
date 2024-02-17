@@ -15,7 +15,7 @@ export class SessionEffects {
     this.actions$.pipe(
       ofType(signInWithOtp),
       switchMap(({ email }) => this.authService.signIn(email)),
-      map(result =>
+      map(() =>
         signInWithOtpSuccess({
           result: true,
         })
