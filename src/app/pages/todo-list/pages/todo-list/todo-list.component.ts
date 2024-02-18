@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { of } from 'rxjs';
-import { Todo } from '../../../../models/Todo';
+import { Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { TodoSlice } from '../../../../chore/state/todo/reducer';
+import { selectTodoList } from '../../../../chore/state/todo/selectors';
+import { loadTodoList } from '../../../../chore/state/todo/actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -8,13 +10,10 @@ import { Todo } from '../../../../models/Todo';
   styleUrl: './todo-list.component.scss',
 })
 export class TodoListComponent {
-  todos$ = of<Todo[]>([
-    {
-      title: 'Todo create page',
-      description: 'Build, design and state flow for todo create page',
-      createdAt: new Date(),
-      dueDate: new Date(1710703969000),
-      state: 'backlog',
-    },
-  ]);
+  private store = inject<Store<TodoSlice>>(Store);
+  todos$ = this.store.select(selectTodoList);
+
+  constructor() {
+    this.store.dispatch(loadTodoList());
+  }
 }

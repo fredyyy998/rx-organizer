@@ -12,6 +12,8 @@ import { ProfileEffects } from './chore/state/profile/effects';
 import { reducer } from './chore/state/state';
 import { sessionFeature } from './chore/state/session/reducers';
 import { SessionEffects } from './chore/state/session/effects';
+import { todoFeature } from './chore/state/todo/reducer';
+import { TodoEffects } from './chore/state/todo/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +28,9 @@ export const appConfig: ApplicationConfig = {
 
     provideState(sessionFeature),
     provideEffects(SessionEffects),
+
+    provideState(todoFeature),
+    provideEffects(TodoEffects),
 
     provideStoreDevtools(),
   ],

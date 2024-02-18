@@ -2,7 +2,14 @@ export interface Todo {
   id?: string;
   title: string;
   description: string;
-  state: 'done' | 'in progress' | 'backlog';
+  state: TodoProgressState;
   createdAt: Date;
+  updatedAt: Date;
   dueDate?: Date;
+}
+
+export enum TodoProgressState {
+  'done',
+  'in progress',
+  'backlog',
 }

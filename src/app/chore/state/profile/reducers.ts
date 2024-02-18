@@ -6,7 +6,6 @@ import {
   updateProfileError,
   updateProfileSuccess,
 } from './actions';
-import { state } from '@angular/animations';
 
 export const PROFILE_FEATURE_KEY = 'profile';
 
@@ -33,7 +32,7 @@ export const profileFeature = createFeature({
     on(loadProfileSuccess, (state, action) => {
       return { ...state, profile: action.profile };
     }),
-    on(updateProfile, (state, action) => {
+    on(updateProfile, state => {
       return { ...state, updateRequestInProgress: true };
     }),
     on(updateProfileSuccess, (state, action) => {
